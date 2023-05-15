@@ -1,0 +1,56 @@
+name: Build and Publish NuGet Package
+
+on:
+  push:
+    branches:
+      - nugetPublish
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build LeapAI.Net.Site/LeapAi.Net.Site/LeapAi.Net.SDK.csproj --configuration Release
+
+      - name: Install dotnet-version tool
+        run: dotnet tool install --global dotnet-version
+
+      - name: Get current version
+        id: get_version
+        run: echo "::set-output name=version::$(dotnet version --show LeapAI.Net.SDK/LeapAI.Net.SDK.csproj)"
+
+      - name: Check commit message
+        id: check_commit
+        run: |
+          if [[ "$(git log --format=%B -n 1)" == *"[NOVERSION]"* ]]; then
+            echo "::set-output name=skip::true"
+          else
+            echo "::set-output name=skip::false"
+          fi
+
+      - name: Increment version
+        id: increment_version
+        run: |
+          if [[ "${{ steps.check_commit.outputs.skip }}" != "true" ]]; then
+            dotnet version --set ${{ steps.get_version.outputs.version }} --increment patch LeapAI.Net.SDK/LeapAI.Net.SDK.csproj
+          else
+            echo "Skipping version increment"
+          fi
+
+      - name: NuGet pack
+        run: dotnet pack LeapAI.Net.SDK/LeapAI.Net.SDK.csproj --configuration Release --output ./artifacts --no-build
+
+      - name: NuGet publish
+        run: nuget push ./artifacts/*.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json
