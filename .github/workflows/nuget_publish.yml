@@ -22,7 +22,7 @@ jobs:
         run: dotnet restore
 
       - name: Build project
-        run: dotnet build LeapAI.Net.Site/LeapAi.Net.Site/LeapAi.Net.SDK.csproj --configuration Release
+        run: dotnet build LeapAI.Net.SDK/LeapAi.Net.SDK/LeapAi.Net.SDK.csproj --configuration Release
 
       - name: Install dotnet-version tool
         run: dotnet tool install --global dotnet-version
