@@ -581,6 +581,9 @@ I initially developed this SDK for my personal use and later decided to share it
 
 I will always be using the latest libraries, and future releases will frequently include breaking changes. Please take this into consideration before deciding to use the library. I want to make it clear that I cannot accept any responsibility for any damage caused by using the library. If you feel that this is not suitable for your purposes, you are free to explore alternative libraries.
 
+## Notes concerning automated publishing to NuGet
+Automatic publishing of the SDK project has been added. A PR to the nugetPackAndPublish branch must be approved and merged. Upon completion, the appropriate action workflow should run and package and publish to nuget. This will only perform a Patch update. If a minor/major version update is required, that will need to be done manually and then the patch repo variable will need to be reset to 0.
+
 ## Release Notes
 ### 1.0.0
 - Added Model Fine-Tuning Service (NOTE: A credit card is required to train the model)
