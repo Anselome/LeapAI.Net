@@ -26,7 +26,7 @@ jobs:
 
       - name: Increment patch in project file
         id: increment_version
-        run: sed -i "s/\(<Version>\([0-9]\+\.\)\{2\}\)\([0-9]\+\)/\1${{github.PATCH}}/" LeapAI.Net.SDK/LeapAI.Net.SDK.csproj
+        run: sed -i "s/\(<Version>\([0-9]\+\.\)\{2\}\)\([0-9]\+\)/\1${{vars.PATCH}}/" LeapAI.Net.SDK/LeapAI.Net.SDK.csproj
 
       - name: NuGet pack
         run: dotnet pack LeapAI.Net.SDK/LeapAI.Net.SDK.csproj --configuration Release --output ./artifacts --no-build
