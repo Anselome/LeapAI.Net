@@ -38,4 +38,4 @@ jobs:
         uses: action-pack/increment@v2
         with:
           name: 'PATCH'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
