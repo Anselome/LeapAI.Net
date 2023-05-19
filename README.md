@@ -585,6 +585,9 @@ I will always be using the latest libraries, and future releases will frequently
 Automatic publishing of the SDK project has been added. A PR to the nugetPublish branch must be approved and merged. Upon completion, the appropriate action workflow should run and package and publish to nuget. This will only perform a Patch update. If a minor/major version update is required, that will need to be done manually and then the patch repo variable will need to be reset to 0. API Keys will need to be set yearly around May 15th.
 
 ## Release Notes
+### 1.0.3
+- Added new sampler (unipc)
+
 ### 1.0.0
 - Added Model Fine-Tuning Service (NOTE: A credit card is required to train the model)
 - Breaking changes to some methods in the ImageJobService class
