@@ -1,0 +1,47 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches:
+      - ghpublish
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
+          
+        - name: Set up .NET Core
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: 6.0.x
+
+        - name: Restore dependencies
+          run: dotnet restore
+          
+        - name: Check GitHub Pages status
+          uses: crazy-max/ghaction-github-status@v3
+          with:
+            pages_threshold: major_outage
+          
+        - name: .NET Publish
+          if: success()
+          run: dotnet publish LeapAI.Net.Site/LeapAi.Net.Site.csproj --no-restore -c Release --output ./pages
+            
+        - name: Change base-tag in index.html
+          run: sed -i 's/<base href="\/" \/>/<base href="\/LeapAI.Net\/" \/>/g' pages/wwwroot/index.html
+          
+        - name: Copy index.html to 404.html
+          run: cp pages/wwwroot/index.html pages/wwwroot/404.html
+          
+        - name: Add .nojekyll file
+          run: touch pages/wwwroot/.nojekyll
+
+        - name: Deploy to GitHub Pages
+          if: success()
+          uses: JamesIves/github-pages-deploy-action@v4
+          with:
+            TOKEN: ${{ secrets.PAGES_ACCESS_TOKEN }}
+            FOLDER: ./pages/wwwroot
