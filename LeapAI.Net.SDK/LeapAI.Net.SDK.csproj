@@ -19,10 +19,7 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>LeapAI-NET.png</PackageIcon>
     <Version>1.0.0</Version>
-    <PackageReleaseNotes>- Added Model Fine-Tuning Service (NOTE: A credit card is required to train the model)
-- Breaking changes to some methods in the ImageJobService class
-- Update some XML Docs
-- Update readme</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added new sampler (unipc)</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

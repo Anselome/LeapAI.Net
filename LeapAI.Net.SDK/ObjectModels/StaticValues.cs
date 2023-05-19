@@ -9,6 +9,7 @@
             public static string Sampler_dpmppsde => "dpm_plusplus_sde";
             public static string Sampler_euler => "euler";
             public static string Sampler_eulera => "euler_a";
+            public static string Sampler_unipc => "unipc";
         }
 
         public static class RemixModes
