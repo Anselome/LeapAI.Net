@@ -20,7 +20,8 @@ namespace LeapAI.Net.SDK.Services.Image
         /// <returns>An ImageJobCreateResponse object containing details of the job</returns>
         /// <remarks>If no model ID is provided in the request, the default will be used</remarks>
         /// <exception cref="ArgumentException">Occurs if no model ID was provided in the request
-        /// and no default model ID has been set</exception>
+        /// and no default model ID has been set. Will also occur if the requested number of images is 
+        /// greater than 4 or if the requested number of steps is greater than 100</exception>
         /// <exception cref="HttpRequestException">Occurs if the API request fails</exception>
         /// <exception cref="InvalidOperationException">Occurs if the response content is null</exception>
         public async Task<ImageJobCreateResponse> CreateImageJobAsync(ImageJobCreateRequest request, 
@@ -28,6 +29,10 @@ namespace LeapAI.Net.SDK.Services.Image
         {
             if (string.IsNullOrEmpty(DefaultModelId) && string.IsNullOrEmpty(modelId))
                 throw new ArgumentException("No model ID was provided.");
+            if (request.NumberOfImages > 4)
+                throw new ArgumentException("The maximum number of images is 4.");
+            if (request.Steps > 100)
+                throw new ArgumentException("The maximum number of steps is 100.");
 
             var chosenModel = modelId ?? DefaultModelId;
             var response = await _httpClient.PostAsJsonAsync(_endpointProvider.ImageJobCreate(chosenModel),
