@@ -4,6 +4,7 @@
 @using LeapAI.Net.SDK.ObjectModels;
 @using LeapAI.Net.SDK.Services.Image;
 @using LeapAI.Net.SDK.Services;
+@using LeapAi.Net.Site.Components.Shared;
 
 <PageTitle>LeapAI.Net</PageTitle>
 
@@ -20,11 +21,17 @@
 {
     @if (JobDone)
     {
+        <p>
+            Here are the images generated for your prompt:
+        </p>
+
         @foreach (var image in ImageJobInfo.Images)
         {
             <img src="@image.Uri" />
             <br />
         }
+
+        <button @onclick="GenerateMore">Generate More Images</button>
     }
     else
     {
@@ -38,43 +45,24 @@
 }
 else
 {
-    <p>Please enter your API key below:</p>
-    <input type="text" @bind="ApiKey" />
+    <ApiKeyComponent OnValueChanged="ApiKeyChanged" />
     <br />
     <br />
 
-    <p>Please enter your prompt below:</p>
-    <input type="text" @bind="Prompt" />
+    <PromptComponent OnValueChanged="PromptChanged" />
     <br />
     <br />
 
-    <p>
-        Please select the number of images you'd like to generate:
-        <select @bind="NumberOfSamples">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
-    </p>
+    <NumberOfSamplesComponent OnValueChanged="NumberOfSamplesChanged" />
     <br />
 
-    <p>
-        Please select the model you'd like to use:
-        <select @bind="ModelNumber">
-            <option value="1" selected>StableDiffusion1_5</option>
-            <option value="2">StableDiffusion2_1</option>
-            <option value="3">OpenJourney4</option>
-            <option value="4">OpenJourney2</option>
-            <option value="5">OpenJourney1</option>
-            <option value="6">ModernDisney</option>
-            <option value="7">FutureDiffusion</option>
-            <option value="8">RealisticVision2_0</option>
-        </select>
-    </p>
+    <ChooseModelComponent OnValueChanged="ChosenModelChanged" />
     <br />
 
-    <button @onclick="CreateImageJob">Generate Image</button>
+    @if(!string.IsNullOrEmpty(ApiKey) && !string.IsNullOrEmpty(Prompt))
+    {
+        <button @onclick="CreateImageJob">Generate Image</button>
+    }
 }
 
 <br />
@@ -82,10 +70,10 @@ else
 
 @code
 {
-    private string? ApiKey { get; set; }
-    private string? Prompt { get; set; }
+    private string ApiKey { get; set; } = string.Empty;
+    private string Prompt { get; set; } = string.Empty;
+    private string ChosenModel { get; set; } = PreTrainedModels.RealisticVision2_0;
     private int NumberOfSamples { get; set; } = 1;
-    private int ModelNumber { get; set; } = 8;    
 
     private ImageJobCreateResponse? ImageJob { get; set; }
     private ImageJobResponse? ImageJobInfo { get; set; }
@@ -93,16 +81,48 @@ else
     private bool JobInProgress = false;
     private bool JobDone = false;
 
+    private void ApiKeyChanged(string value)
+    {
+        ApiKey = value;
+    }
+
+    private void PromptChanged(string value)
+    {
+        Prompt = value;
+    }
+
+    private void NumberOfSamplesChanged(int value)
+    {
+        NumberOfSamples = value;
+    }
+
+    private void ChosenModelChanged(string value)
+    {
+        ChosenModel = value;
+    }
+
+    private void GenerateMore()
+    {
+        JobDone = false;
+        JobInProgress = false;
+
+        StateHasChanged();
+    }
+
     private async Task CreateImageJob()
     {
         if (string.IsNullOrEmpty(ApiKey))
             throw new ArgumentNullException(nameof(ApiKey));
+        if (string.IsNullOrEmpty(Prompt))
+            throw new ArgumentNullException(nameof(Prompt));
+        if (string.IsNullOrEmpty(ChosenModel))
+            throw new ArgumentNullException(nameof(ChosenModel));
 
         var imageJobService = new ImageJobService(new LeapAiOptions
         {
             ApiKey = ApiKey,
             ApiVersion = "v1",
-            DefaultModelId = ChooseModel(ModelNumber.ToString())
+            DefaultModelId = ChosenModel
         });
 
         ImageJobCreateResponse? imageResult = null;
@@ -167,7 +187,7 @@ else
         {
             ApiKey = ApiKey,
             ApiVersion = "v1",
-            DefaultModelId = ChooseModel(ModelNumber.ToString())
+            DefaultModelId = ImageJob.ModelId
         });
 
         ImageJobResponse? imageResult = null;
@@ -204,21 +224,5 @@ else
             attempts++;
             await Task.Delay(60000);
         }
-    }
-
-    private string ChooseModel(string modelNumber)
-    {
-        return modelNumber switch
-        {
-            "1" => PreTrainedModels.StableDiffusion1_5,
-            "2" => PreTrainedModels.StableDiffusion2_1,
-            "3" => PreTrainedModels.OpenJourney4,
-            "4" => PreTrainedModels.OpenJourney2,
-            "5" => PreTrainedModels.OpenJourney1,
-            "6" => PreTrainedModels.ModernDisney,
-            "7" => PreTrainedModels.FutureDiffusion,
-            "8" => PreTrainedModels.RealisticVision2_0,
-            _ => PreTrainedModels.OpenJourney4
-        };
-    }
+    }    
 }
