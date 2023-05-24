@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeapAI.Net.Test", "LeapAI.N
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Site", "Site", "{4E579A0F-6802-4203-BAAD-8B5247852821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeapAi.Net.Site", "LeapAI.Net.Site\LeapAi.Net.Site.csproj", "{2E09F917-7E6A-49B8-B8F3-E404CC374C74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeapAi.Net.Site", "LeapAI.Net.Site\LeapAi.Net.Site.csproj", "{2E09F917-7E6A-49B8-B8F3-E404CC374C74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
