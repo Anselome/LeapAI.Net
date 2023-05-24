@@ -47,7 +47,8 @@ namespace LeapAI.Net.SDK.ObjectModels.RequestModels
         public string? Version { get; set; }
 
         /// <summary>
-        /// The number of steps to take when creating the image
+        /// The number of steps to take when creating the image. 
+        /// Must be no more than 100.
         /// </summary>
         [JsonPropertyName("steps")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -71,7 +72,7 @@ namespace LeapAI.Net.SDK.ObjectModels.RequestModels
 
         /// <summary>
         /// The number of images to generate for the inference. 
-        /// Max batch size is 20.
+        /// Must be no larger than 4.
         /// </summary>
         [JsonPropertyName("numberOfImages")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
