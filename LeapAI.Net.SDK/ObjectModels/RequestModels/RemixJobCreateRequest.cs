@@ -26,7 +26,7 @@ namespace LeapAI.Net.SDK.ObjectModels.RequestModels
         }
 
         /// <summary>
-        /// The prompt to use for image creation
+        /// The prompt to use for remix creation
         /// </summary>
         [JsonPropertyName("prompt")]
         public string? Prompt { get; set; }
@@ -39,21 +39,22 @@ namespace LeapAI.Net.SDK.ObjectModels.RequestModels
         public string? ImageUrl { get; set; }
 
         /// <summary>
-        /// Things you want to avoid in the image
+        /// Things you want to avoid in the remix
         /// </summary>
         [JsonPropertyName("negativePrompt")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? NegativePrompt { get; set; }
 
         /// <summary>
-        /// The number of steps to take when creating the image
+        /// The number of steps to take when creating the remix. 
+        /// Must be no more than 100.
         /// </summary>
         [JsonPropertyName("steps")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? Steps { get; set; }
 
         /// <summary>
-        /// The seed to use for the inference. 
+        /// The seed to use for the remix. 
         /// Must be a positive integer.
         /// </summary>
         [JsonPropertyName("seed")]
@@ -69,8 +70,8 @@ namespace LeapAI.Net.SDK.ObjectModels.RequestModels
         public string? WebhookUrl { get; set; }
 
         /// <summary>
-        /// The number of images to generate for the inference. 
-        /// Max batch size is 20.
+        /// The number of images to generate for the remix. 
+        /// Must be no larger than 4.
         /// </summary>
         [JsonPropertyName("numberOfImages")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -78,7 +79,7 @@ namespace LeapAI.Net.SDK.ObjectModels.RequestModels
 
         /// <summary>
         /// The segmentation mode that should be used 
-        /// when generating the image.
+        /// when generating the remix.
         /// </summary>
         [JsonPropertyName("mode")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
