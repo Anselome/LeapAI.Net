@@ -26,7 +26,8 @@ namespace LeapAI.Net.SDK.Services.Image
         /// <remarks>If no model ID is provided in the request, the default will be used</remarks>
         /// <exception cref="ArgumentException">Occurs if no model ID was provided
         /// and no default model ID has been set or if no file path has been provided or 
-        /// if the provided path doesn't exist</exception>
+        /// if the provided path doesn't exist. Will also occur if the requested number of images is 
+        /// greater than 4 or if the requested number of steps is greater than 100</exception>
         /// <exception cref="HttpRequestException">Occurs if the API request fails</exception>
         /// <exception cref="InvalidOperationException">Occurs if the response content is null</exception>
         public async Task<RemixJobCreateResponse> CreateRemixJobFromFileAsync(RemixJobCreateRequest request, 
@@ -38,6 +39,10 @@ namespace LeapAI.Net.SDK.Services.Image
                 throw new ArgumentException("No file path was provided in the request.");
             if (!File.Exists(pathToFile))
                 throw new ArgumentException("The file path provided does not exist.");
+            if (request.NumberOfImages > 4)
+                throw new ArgumentException("The maximum number of images is 4.");
+            if (request.Steps > 100)
+                throw new ArgumentException("The maximum number of steps is 100.");
 
             var chosenModel = modelId ?? DefaultModelId;
             var formData = new MultipartFormDataContent();
@@ -83,7 +88,9 @@ namespace LeapAI.Net.SDK.Services.Image
         /// <returns>A RemixJobCreateResponse object containing details of the job</returns>
         /// <remarks>If no model ID is provided in the request, the default will be used</remarks>
         /// <exception cref="ArgumentException">Occurs if no model ID was provided in the request
-        /// and no default model ID has been set or if no image URL was provided</exception>
+        /// and no default model ID has been set or if no image URL was provided. Will also occur if 
+        /// the requested number of images is greater than 4 or if the requested number of steps is 
+        /// greater than 100</exception>
         /// <exception cref="HttpRequestException">Occurs if the API request fails</exception>
         /// <exception cref="InvalidOperationException">Occurs if the response content is null</exception>
         public async Task<RemixJobCreateResponse> CreateRemixJobFromUrlAsync(RemixJobCreateRequest request, 
@@ -93,6 +100,10 @@ namespace LeapAI.Net.SDK.Services.Image
                 throw new ArgumentException("No model ID was provided.");
             if (string.IsNullOrEmpty(request.ImageUrl))
                 throw new ArgumentException("No image URL was provided in the request.");
+            if (request.NumberOfImages > 4)
+                throw new ArgumentException("The maximum number of images is 4.");
+            if (request.Steps > 100)
+                throw new ArgumentException("The maximum number of steps is 100.");
 
             var chosenModel = modelId ?? DefaultModelId;
             var response = await _httpClient.PostAsJsonAsync(_endpointProvider.RemixJobUsingUrlCreate(chosenModel),
