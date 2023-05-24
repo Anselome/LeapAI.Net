@@ -19,7 +19,7 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>LeapAI-NET.png</PackageIcon>
     <Version>1.0.0</Version>
-    <PackageReleaseNotes>- Added new sampler (unipc)</PackageReleaseNotes>
+    <PackageReleaseNotes>- Updates to enforce new changes to the API regarding limits for number of images and steps</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

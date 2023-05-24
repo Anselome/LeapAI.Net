@@ -588,6 +588,9 @@ Automatic publishing of the Site project has been added. A PR to the ghpublish b
 Automatic publishing of the SDK project has been added. A PR to the nugetPublish branch must be approved and merged. Upon completion, the appropriate action workflow should run and package and publish to nuget. This will only perform a Patch update. If a minor/major version update is required, that will need to be done manually and then the patch repo variable will need to be reset to 0. API Keys will need to be set yearly around May 15th.
 
 ## Release Notes
+### 1.0.4
+- Updates to enforce new changes to the API regarding limits for number of images and steps
+
 ### 1.0.3
 - Added new sampler (unipc)
 
