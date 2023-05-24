@@ -1,0 +1,47 @@
+﻿@using LeapAI.Net.SDK.ObjectModels;
+
+<p>
+    Please select the model you'd like to use:
+    <select @onchange="ValueChanged">
+        <option value="1" selected>StableDiffusion1_5</option>
+        <option value="2">StableDiffusion2_1</option>
+        <option value="3">OpenJourney4</option>
+        <option value="4">OpenJourney2</option>
+        <option value="5">OpenJourney1</option>
+        <option value="6">ModernDisney</option>
+        <option value="7">FutureDiffusion</option>
+        <option value="8">RealisticVision2_0</option>
+    </select>
+</p>
+
+@code {
+
+    [Parameter]
+    public int ModelNumber { get; set; } = 8;
+    
+    [Parameter]
+    public EventCallback<string> OnValueChanged { get; set; }
+
+    private async Task ValueChanged(ChangeEventArgs e)
+    {
+        ModelNumber = int.Parse(e.Value.ToString());
+
+        await OnValueChanged.InvokeAsync(ChooseModel(ModelNumber.ToString()));
+    }
+
+    private string ChooseModel(string modelNumber)
+    {
+        return modelNumber switch
+        {
+            "1" => PreTrainedModels.StableDiffusion1_5,
+            "2" => PreTrainedModels.StableDiffusion2_1,
+            "3" => PreTrainedModels.OpenJourney4,
+            "4" => PreTrainedModels.OpenJourney2,
+            "5" => PreTrainedModels.OpenJourney1,
+            "6" => PreTrainedModels.ModernDisney,
+            "7" => PreTrainedModels.FutureDiffusion,
+            "8" => PreTrainedModels.RealisticVision2_0,
+            _ => PreTrainedModels.OpenJourney4
+        };
+    }
+}

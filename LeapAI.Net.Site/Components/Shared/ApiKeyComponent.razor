@@ -1,0 +1,19 @@
+﻿<p>Please enter your API key below:</p>
+<input type="text" @bind="@Value" @oninput="ValueChanged" />
+
+@code {
+
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> OnValueChanged { get; set; }
+
+    private async Task ValueChanged(ChangeEventArgs e)
+    {
+        Value = e.Value.ToString();
+
+        await OnValueChanged.InvokeAsync(Value);
+    }
+
+}
